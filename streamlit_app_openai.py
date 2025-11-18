@@ -25,7 +25,7 @@ client = OpenAI(api_key=GPT_API_KEY)
 # FIREBASE INITIALIZATION
 # ---------------------------
 if not firebase_admin._apps:
-    cred = credentials.Certificate(FIREBASE_CREDENTIALS)
+    cred = credentials.Certificate('C:\\Users\\CurveSystem 52\\Desktop\\IMRAN_WORK\\credentials\\health-app-7a8b0-firebase-adminsdk-fbsvc-9d28c0ae3f.json')
     firebase_admin.initialize_app(cred)
 
 db = firestore.client()
