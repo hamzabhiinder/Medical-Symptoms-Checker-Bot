@@ -16,7 +16,7 @@ st.set_page_config(page_title="AI Medical Assistant", page_icon="💊", layout="
 # Load environment variables
 load_dotenv()
 GPT_API_KEY = os.getenv("OPENAI_API_KEY")
-FIREBASE_CREDENTIALS = os.getenv("FIREBASE_CREDENTIALS_JSON")
+
 
 # Initialize OpenAI client
 client = OpenAI(api_key=GPT_API_KEY)
