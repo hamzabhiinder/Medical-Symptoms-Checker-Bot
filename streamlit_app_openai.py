@@ -45,6 +45,7 @@ def get_user_medical_history_and_medicine_summary(uid: str):
             return None
 
         data = doc.to_dict()
+        name=data.get("displayName")
 
         summaries = []
         if "answers" in data:
@@ -66,11 +67,30 @@ def get_user_medical_history_and_medicine_summary(uid: str):
                 "frequency": med.get("frequency", "1")
             })
 
+        # 3. Get chat history
+        ref = db.collection("chatHistory")
+        query = ref.where("userId", "==", uid)
+
+        messages = []
+
+        for doc in query.stream():
+            data = doc.to_dict()
+            # print(data)
+            sender = "user" if data.get("isUser") else "bot"
+
+            messages.append({
+                "message": data.get("message"),
+                "sender": sender
+            })
+
         # 3. Final response
         return {
             "user_id": uid,
+            "user_name": name,
             "medical_history": summaries,
-            "medicines": medicines
+            "medicines": medicines,
+            "chat_history": messages,
+
         }
     except Exception as e:
         st.error(f"Error fetching data: {e}")
