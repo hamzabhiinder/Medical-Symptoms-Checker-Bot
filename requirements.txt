@@ -1,0 +1,7 @@
+streamlit
+python-dotenv
+fastapi
+uvicorn
+gunicorn
+openai
+firebase-admin
