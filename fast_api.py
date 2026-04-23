@@ -1870,7 +1870,7 @@ db = firestore.client()
 
 # Initialize OpenAI client
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-
+OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-5.4")
 # Local session storage (in-memory)
 # In production, use Redis or database
 SESSIONS: Dict[str, List[Dict]] = {}
@@ -2205,10 +2205,9 @@ async def chat(request: ChatRequest):
         
         # Generate AI response
         response = client.chat.completions.create(
-            model="gpt-4o-mini",  # Supports vision
+            model=OPENAI_MODEL,  # Supports vision
             messages=session_messages,
-            temperature=0.7,
-            max_tokens=800  # Increased for image analysis
+            temperature=0.7 # Increased for image analysis
         )
         
         reply = response.choices[0].message.content
@@ -2268,10 +2267,9 @@ async def chat_multipart(
         
         # Generate AI response
         response = client.chat.completions.create(
-            model="gpt-4o-mini",
+            model=OPENAI_MODEL,
             messages=session_messages,
-            temperature=0.7,
-            max_tokens=800
+            temperature=0.7
         )
         
         reply = response.choices[0].message.content
@@ -2355,13 +2353,12 @@ Respond in this EXACT JSON format (no extra text):
 """
         
         analysis_response = client.chat.completions.create(
-            model="gpt-4o",  # Using GPT-4o for better accuracy
+            model=OPENAI_MODEL,  # Using GPT-4o for better accuracy
             messages=[
                 {"role": "system", "content": "You are a medical AI. Respond only in JSON format."},
                 {"role": "user", "content": analysis_prompt}
             ],
-            temperature=0.3,
-            max_tokens=500
+            temperature=0.3
         )
         
         analysis_text = analysis_response.choices[0].message.content.strip()
@@ -2413,13 +2410,12 @@ IMPORTANT:
 """
         
         article_response = client.chat.completions.create(
-            model="gpt-4o",
+            model=OPENAI_MODEL,
             messages=[
                 {"role": "system", "content": "You are a medical article curator. Generate valid URLs from trusted medical websites based on patient symptoms. Respond only in JSON format."},
                 {"role": "user", "content": article_prompt}
             ],
-            temperature=0.4,
-            max_tokens=700
+            temperature=0.4
         )
         
         article_text = article_response.choices[0].message.content.strip()
